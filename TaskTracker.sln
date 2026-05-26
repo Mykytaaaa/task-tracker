@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTracker", "TaskTracker\TaskTracker.csproj", "{39BD7EE2-68B4-454E-A1C8-37FBA33FB709}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskTrackerTest", "TaskTrackerTest\TaskTrackerTest.csproj", "{9A350957-8314-4FB3-A187-97E4E9DE5BA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39BD7EE2-68B4-454E-A1C8-37FBA33FB709}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39BD7EE2-68B4-454E-A1C8-37FBA33FB709}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39BD7EE2-68B4-454E-A1C8-37FBA33FB709}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39BD7EE2-68B4-454E-A1C8-37FBA33FB709}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A350957-8314-4FB3-A187-97E4E9DE5BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A350957-8314-4FB3-A187-97E4E9DE5BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A350957-8314-4FB3-A187-97E4E9DE5BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A350957-8314-4FB3-A187-97E4E9DE5BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B255706-5B2A-4860-8BEC-FE04C19E2747}
+	EndGlobalSection
+EndGlobal
