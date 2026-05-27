@@ -45,7 +45,7 @@
 
         public bool HasDueDate()
         {
-            return Priority != defaultPriority;
+            return DueDate != defaultDueDate;
         }
     }
 }
