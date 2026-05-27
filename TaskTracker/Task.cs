@@ -17,16 +17,6 @@
             Id = id;
         }
 
-        public Task(int id, string title, string description, int priority, string category, DateOnly dueDate)
-        {
-            Id = id;
-            Title = title;
-            Description = description;
-            Priority = priority;
-            Category = category;
-            DueDate = dueDate;
-        }
-
         public override string ToString()
         {
             string result = $"Id = {Id}"
