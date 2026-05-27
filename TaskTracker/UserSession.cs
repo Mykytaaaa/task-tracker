@@ -98,7 +98,7 @@
         {
             var tasks = taskManager.GetTasks();
             foreach (var task in tasks)
-                Console.WriteLine(task.ToString());
+                Console.WriteLine(task.ToText());
         }
     }
 }

@@ -21,7 +21,7 @@
             DueDate = defaultDueDate;
         }
 
-        public override string ToString()
+        public string ToText()
         {
             string result = $"Id = {Id}"
                 + $"\nTitle: {Title}";
