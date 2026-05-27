@@ -13,5 +13,10 @@
         {
             return tasks;
         }
+
+        public Task? GetTaskById(int id)
+        {
+            return tasks.FirstOrDefault(t => t.Id == id);
+        }
     }
 }

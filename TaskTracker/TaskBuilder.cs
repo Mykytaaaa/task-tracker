@@ -16,6 +16,12 @@
             return this;
         }
 
+        public TaskBuilder Modify(Task newTask)
+        {
+            task = newTask;
+            return this;
+        }
+
         public TaskBuilder SetTitle(string title)
         {
             task.Title = title;

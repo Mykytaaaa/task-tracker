@@ -4,6 +4,7 @@
     {
         private const string AddTaskCommand = "add";
         private const string ListAllCommand = "list";
+        private const string UpdateTaskByIdCommand = "update";
 
         private const string DescriptionCommand = "desc: ";
         private const string PriorityCommand = "priority: ";
@@ -20,7 +21,7 @@
 
         public void HandleUser()
         {
-            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command and view them by \"{ListAllCommand}\" command.");
+            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command and update by \"{UpdateTaskByIdCommand}\" command.");
 
             string? input;
             while (true)
@@ -32,6 +33,8 @@
                         AddTask();
                     else if (input.Equals(ListAllCommand, StringComparison.InvariantCultureIgnoreCase))
                         ListAll();
+                    else if (input.Equals(UpdateTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
+                        UpdateTaskById();
                     else
                         Console.WriteLine("Unknown command");
                 }
@@ -57,20 +60,24 @@
             }
 
             Console.WriteLine("Would you like to add any details?");
+            var task = TaskBuilderDialog();
+            taskManager.AddTask(task);
+            Console.WriteLine("Task added.");
+        }
+
+        private Task TaskBuilderDialog()
+        {
             Console.WriteLine($"Use \"{DescriptionCommand}\" to add task description");
             Console.WriteLine($"Use \"{PriorityCommand}\" to add priority (number)");
             Console.WriteLine($"Use \"{CategoryCommand}\" to add category");
             Console.WriteLine($"Use \"{DueDateCommand}\" to add due date (mm.dd.yyyy)");
             Console.WriteLine($"Press Enter on an empty line to save the task to the list.");
+            string? input;
             while (true)
             {
                 input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input))
-                {
-                    taskManager.AddTask(taskBuilder.GetResult());
-                    Console.WriteLine("Task added.");
-                    break;
-                }
+                    return taskBuilder.GetResult();
                 else if (input.StartsWith(DescriptionCommand, true, null))
                     taskBuilder.SetDescription(input.Substring(DescriptionCommand.Length));
                 else if (input.StartsWith(PriorityCommand, true, null))
@@ -99,6 +106,38 @@
             var tasks = taskManager.GetTasks();
             foreach (var task in tasks)
                 Console.WriteLine(task.ToText());
+        }
+
+        private void UpdateTaskById()
+        {
+            string? input;
+
+            Console.WriteLine("Enter the task id:");
+            while (true)
+            {
+                input = Console.ReadLine();
+                if (!string.IsNullOrEmpty(input))
+                {
+                    if (int.TryParse(input, out int taskId))
+                    {
+                        var task = taskManager.GetTaskById(taskId);
+                        if (task != null)
+                        {
+                            taskBuilder.Modify(task);
+                            break;
+                        }
+                        else
+                            Console.WriteLine("Task not found.");
+                    }
+                    else
+                        Console.WriteLine("Task id must be a number.");
+                }
+                else
+                    break;
+            }
+
+            TaskBuilderDialog();
+            Console.WriteLine("Task updated.");
         }
     }
 }
