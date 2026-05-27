@@ -9,12 +9,16 @@
         public string? Category;
         public DateOnly DueDate;
 
+        private const string defaultTitle = "Untitled";
         private const int defaultPriority = -1;
         private readonly DateOnly defaultDueDate = DateOnly.MaxValue;
 
         public Task(int id)
         {
             Id = id;
+            Title = defaultTitle;
+            Priority = defaultPriority;
+            DueDate = defaultDueDate;
         }
 
         public override string ToString()
