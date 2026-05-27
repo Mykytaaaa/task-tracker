@@ -8,5 +8,10 @@
         {
             tasks.Add(task);
         }
+
+        public List<Task> GetTasks()
+        {
+            return tasks;
+        }
     }
 }

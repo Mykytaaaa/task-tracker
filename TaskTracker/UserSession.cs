@@ -3,6 +3,7 @@
     internal class UserSession
     {
         private const string AddTaskCommand = "add";
+        private const string ListAllCommand = "list";
 
         private const string DescriptionCommand = "desc: ";
         private const string PriorityCommand = "priority: ";
@@ -19,7 +20,7 @@
 
         public void HandleUser()
         {
-            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command.");
+            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command and view them by \"{ListAllCommand}\" command.");
 
             string? input;
             while (true)
@@ -29,6 +30,8 @@
                 {
                     if (input.Equals(AddTaskCommand, StringComparison.InvariantCultureIgnoreCase))
                         AddTask();
+                    else if (input.Equals(ListAllCommand, StringComparison.InvariantCultureIgnoreCase))
+                        ListAll();
                     else
                         Console.WriteLine("Unknown command");
                 }
@@ -89,6 +92,13 @@
                 else
                     Console.WriteLine("Unknown command");
             }
+        }
+
+        private void ListAll()
+        {
+            var tasks = taskManager.GetTasks();
+            foreach (var task in tasks)
+                Console.WriteLine(task.ToString());
         }
     }
 }
