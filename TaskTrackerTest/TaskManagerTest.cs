@@ -16,7 +16,7 @@ namespace TaskTrackerTest
             {
                 taskBuilder.Reset();
                 var task = taskBuilder.GetResult();
-                taskManager.Add(task);
+                taskManager.AddTask(task);
                 tasks.Add(task);
             }
 

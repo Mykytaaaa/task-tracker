@@ -1,6 +1,6 @@
 ﻿namespace TaskTracker
 {
-    internal class TaskManager
+    public class TaskManager
     {
         private List<Task> tasks = new List<Task>();
 
@@ -17,6 +17,17 @@
         public Task? GetTaskById(int id)
         {
             return tasks.FirstOrDefault(t => t.Id == id);
+        }
+
+        public bool DeleteTask(int id)
+        {
+            var task = tasks.FirstOrDefault(t => t.Id == id);
+            if (task != null)
+            {
+                tasks.Remove(task);
+                return true;
+            }
+            return false;
         }
     }
 }
