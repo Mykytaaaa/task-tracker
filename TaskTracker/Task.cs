@@ -9,6 +9,9 @@
         public string? Category;
         public DateOnly DueDate;
 
+        private const int defaultPriority = -1;
+        private readonly DateOnly defaultDueDate = DateOnly.MaxValue;
+
         public Task(int id)
         {
             Id = id;
@@ -22,6 +25,33 @@
             Priority = priority;
             Category = category;
             DueDate = dueDate;
+        }
+
+        public override string ToString()
+        {
+            string result = $"Id = {Id}"
+                + $"\nTitle: {Title}";
+
+            if (!string.IsNullOrEmpty(Description))
+                result += "Description: " + Description;
+            if (HasPriority())
+                result += "Priority: " + Priority;
+            if (!string.IsNullOrEmpty(Category))
+                result += "Category: " + Category;
+            if (HasDueDate())
+                result += "Due: " + DueDate;
+
+            return result;
+        }
+
+        public bool HasPriority()
+        {
+            return Priority != defaultPriority;
+        }
+
+        public bool HasDueDate()
+        {
+            return Priority != defaultPriority;
         }
     }
 }
