@@ -1,13 +1,18 @@
 ﻿namespace TaskTracker
 {
-    internal class Task
+    public class Task
     {
         public int Id { get; private set; }
-        public string Title;
-        public string Description;
+        public string? Title;
+        public string? Description;
         public int Priority;
-        public string Category;
+        public string? Category;
         public DateOnly DueDate;
+
+        public Task(int id)
+        {
+            Id = id;
+        }
 
         public Task(int id, string title, string description, int priority, string category, DateOnly dueDate)
         {
