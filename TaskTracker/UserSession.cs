@@ -5,6 +5,7 @@
         private const string AddTaskCommand = "add";
         private const string ListAllCommand = "list";
         private const string UpdateTaskByIdCommand = "update";
+        private const string DeleteTaskByIdCommand = "delete";
 
         private const string DescriptionCommand = "desc: ";
         private const string PriorityCommand = "priority: ";
@@ -21,7 +22,7 @@
 
         public void HandleUser()
         {
-            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command and update by \"{UpdateTaskByIdCommand}\" command.");
+            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command and delete by \"{DeleteTaskByIdCommand}\" command.");
 
             string? input;
             while (true)
@@ -35,6 +36,8 @@
                         ListAll();
                     else if (input.Equals(UpdateTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
                         UpdateTaskById();
+                    else if (input.Equals(DeleteTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
+                        DeleteTaskById();
                     else
                         Console.WriteLine("Unknown command");
                 }
@@ -138,6 +141,27 @@
 
             TaskBuilderDialog();
             Console.WriteLine("Task updated.");
+        }
+
+        private void DeleteTaskById()
+        {
+            string? input;
+
+            Console.WriteLine("Enter the task id:");
+            input = Console.ReadLine();
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (int.TryParse(input, out int taskId))
+                {
+                    bool deleted = taskManager.DeleteTask(taskId);
+                    if (deleted)
+                        Console.WriteLine("Task deleted.");
+                    else
+                        Console.WriteLine("Task not found.");
+                }
+                else
+                    Console.WriteLine("Task id must be a number.");
+            }
         }
     }
 }
