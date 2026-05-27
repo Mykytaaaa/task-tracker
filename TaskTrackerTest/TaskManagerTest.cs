@@ -28,5 +28,19 @@ namespace TaskTrackerTest
             Assert.DoesNotContain(tasks[1], remainingTasks);
             Assert.Contains(tasks[2], remainingTasks);
         }
+
+        [Fact]
+        public void OneTask_DeleteInexistent_TaskNotFound()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            taskBuilder.Reset();
+            var task = taskBuilder.GetResult();
+            taskManager.AddTask(task);
+
+            bool deleted = taskManager.DeleteTask(task.Id + 1);
+            Assert.False(deleted);
+        }
     }
 }
