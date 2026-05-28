@@ -11,10 +11,10 @@ namespace TaskTracker
         public const string FindTaskByKeywordCommand = "find";
         public const string QuitCommand = "quit";
 
-        public const string DescriptionCommand = "desc: ";
-        public const string PriorityCommand = "priority: ";
-        public const string CategoryCommand = "category: ";
-        public const string DueDateCommand = "due: ";
+        public const string SetDescriptionCommand = "desc: ";
+        public const string SetPriorityCommand = "priority: ";
+        public const string SetCategoryCommand = "category: ";
+        public const string SetDueDateCommand = "due: ";
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
@@ -81,10 +81,10 @@ namespace TaskTracker
 
         private Task TaskBuilderDialog()
         {
-            ui.WriteLine($"Use \"{DescriptionCommand}\" to add task description");
-            ui.WriteLine($"Use \"{PriorityCommand}\" to add priority (number)");
-            ui.WriteLine($"Use \"{CategoryCommand}\" to add category");
-            ui.WriteLine($"Use \"{DueDateCommand}\" to add due date (mm.dd.yyyy)");
+            ui.WriteLine($"Use \"{SetDescriptionCommand}\" to add task description");
+            ui.WriteLine($"Use \"{SetPriorityCommand}\" to add priority (number)");
+            ui.WriteLine($"Use \"{SetCategoryCommand}\" to add category");
+            ui.WriteLine($"Use \"{SetDueDateCommand}\" to add due date (mm.dd.yyyy)");
             ui.WriteLine($"Press Enter on an empty line to save the task to the list.");
             string? input;
             while (true)
@@ -92,20 +92,20 @@ namespace TaskTracker
                 input = ui.ReadLine();
                 if (string.IsNullOrEmpty(input))
                     return taskBuilder.GetResult();
-                else if (input.StartsWith(DescriptionCommand, true, null))
-                    taskBuilder.SetDescription(input.Substring(DescriptionCommand.Length));
-                else if (input.StartsWith(PriorityCommand, true, null))
+                else if (input.StartsWith(SetDescriptionCommand, true, null))
+                    taskBuilder.SetDescription(input.Substring(SetDescriptionCommand.Length));
+                else if (input.StartsWith(SetPriorityCommand, true, null))
                 {
-                    if (int.TryParse(input.Substring(PriorityCommand.Length), out int priority))
+                    if (int.TryParse(input.Substring(SetPriorityCommand.Length), out int priority))
                         taskBuilder.SetPriority(priority);
                     else
                         ui.WriteLine("Priority must be a number.");
                 }
-                else if (input.StartsWith(CategoryCommand, true, null))
-                    taskBuilder.SetCategory(input.Substring(CategoryCommand.Length));
-                else if (input.StartsWith(DueDateCommand, true, null))
+                else if (input.StartsWith(SetCategoryCommand, true, null))
+                    taskBuilder.SetCategory(input.Substring(SetCategoryCommand.Length));
+                else if (input.StartsWith(SetDueDateCommand, true, null))
                 {
-                    if (DateOnly.TryParse(input.Substring(DueDateCommand.Length), out DateOnly dueDate))
+                    if (DateOnly.TryParse(input.Substring(SetDueDateCommand.Length), out DateOnly dueDate))
                         taskBuilder.SetDueDate(dueDate);
                     else
                         ui.WriteLine("Due date not recognized.");

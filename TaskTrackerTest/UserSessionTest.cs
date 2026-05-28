@@ -24,7 +24,7 @@ namespace TaskTrackerTest
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Buy eggs");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.ListAllCommand);
             uiMock.userInput.Add(UserSession.QuitCommand);
@@ -43,12 +43,12 @@ namespace TaskTrackerTest
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Buy eggs");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.UpdateTaskByIdCommand);
             uiMock.userInput.Add("0");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Cook eggs");
-            uiMock.userInput.Add(UserSession.CategoryCommand + "groceries");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Cook eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "groceries");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.ListAllCommand);
             uiMock.userInput.Add(UserSession.QuitCommand);
@@ -68,7 +68,7 @@ namespace TaskTrackerTest
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Buy eggs");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.DeleteTaskByIdCommand);
             uiMock.userInput.Add("0");
@@ -89,7 +89,7 @@ namespace TaskTrackerTest
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Buy eggs");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.FindTaskByKeywordCommand);
             uiMock.userInput.Add("eggs");
@@ -109,10 +109,10 @@ namespace TaskTrackerTest
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
-            uiMock.userInput.Add(UserSession.DescriptionCommand + "Buy eggs");
-            uiMock.userInput.Add(UserSession.PriorityCommand + "2");
-            uiMock.userInput.Add(UserSession.CategoryCommand + "groceries");
-            uiMock.userInput.Add(UserSession.DueDateCommand + "11.11.2026");
+            uiMock.userInput.Add(UserSession.SetDescriptionCommand + "Buy eggs");
+            uiMock.userInput.Add(UserSession.SetPriorityCommand + "2");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "groceries");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "11.11.2026");
             uiMock.userInput.Add(string.Empty);
             uiMock.userInput.Add(UserSession.ListAllCommand);
             uiMock.userInput.Add(UserSession.QuitCommand);
