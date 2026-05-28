@@ -1,4 +1,6 @@
-﻿namespace TaskTracker
+﻿using TaskTracker.UI;
+
+namespace TaskTracker
 {
     internal class UserSession
     {
@@ -15,20 +17,22 @@
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
+        private IUserInterface ui;
 
-        public UserSession(TaskManager taskManager)
+        public UserSession(TaskManager taskManager, IUserInterface ui)
         {
             this.taskManager = taskManager;
+            this.ui = ui;
         }
 
         public void HandleUser()
         {
-            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, and find by keyword using \"{FindTaskByKeywordCommand}\" command.");
+            ui.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, and find by keyword using \"{FindTaskByKeywordCommand}\" command.");
 
             string? input;
             while (true)
             {
-                input = Console.ReadLine();
+                input = ui.ReadLine();
                 if (!string.IsNullOrEmpty(input))
                 {
                     if (input.Equals(AddTaskCommand, StringComparison.InvariantCultureIgnoreCase))
@@ -42,7 +46,7 @@
                     else if (input.Equals(FindTaskByKeywordCommand, StringComparison.InvariantCultureIgnoreCase))
                         FindTaskByKeyword();
                     else
-                        Console.WriteLine("Unknown command");
+                        ui.WriteLine("Unknown command");
                 }
             }
         }
@@ -52,36 +56,36 @@
             string? input;
             taskBuilder.Reset();
 
-            Console.WriteLine("Enter a title for the new task:");
+            ui.WriteLine("Enter a title for the new task:");
             while (true)
             {
-                input = Console.ReadLine();
+                input = ui.ReadLine();
                 if (!string.IsNullOrEmpty(input))
                 {
                     taskBuilder.SetTitle(input);
                     break;
                 }
                 else
-                    Console.WriteLine("Please enter a title");
+                    ui.WriteLine("Please enter a title");
             }
 
-            Console.WriteLine("Would you like to add any details?");
+            ui.WriteLine("Would you like to add any details?");
             var task = TaskBuilderDialog();
             taskManager.AddTask(task);
-            Console.WriteLine("Task added.");
+            ui.WriteLine("Task added.");
         }
 
         private Task TaskBuilderDialog()
         {
-            Console.WriteLine($"Use \"{DescriptionCommand}\" to add task description");
-            Console.WriteLine($"Use \"{PriorityCommand}\" to add priority (number)");
-            Console.WriteLine($"Use \"{CategoryCommand}\" to add category");
-            Console.WriteLine($"Use \"{DueDateCommand}\" to add due date (mm.dd.yyyy)");
-            Console.WriteLine($"Press Enter on an empty line to save the task to the list.");
+            ui.WriteLine($"Use \"{DescriptionCommand}\" to add task description");
+            ui.WriteLine($"Use \"{PriorityCommand}\" to add priority (number)");
+            ui.WriteLine($"Use \"{CategoryCommand}\" to add category");
+            ui.WriteLine($"Use \"{DueDateCommand}\" to add due date (mm.dd.yyyy)");
+            ui.WriteLine($"Press Enter on an empty line to save the task to the list.");
             string? input;
             while (true)
             {
-                input = Console.ReadLine();
+                input = ui.ReadLine();
                 if (string.IsNullOrEmpty(input))
                     return taskBuilder.GetResult();
                 else if (input.StartsWith(DescriptionCommand, true, null))
@@ -91,7 +95,7 @@
                     if (int.TryParse(input.Substring(PriorityCommand.Length), out int priority))
                         taskBuilder.SetPriority(priority);
                     else
-                        Console.WriteLine("Priority must be a number.");
+                        ui.WriteLine("Priority must be a number.");
                 }
                 else if (input.StartsWith(CategoryCommand, true, null))
                     taskBuilder.SetCategory(input.Substring(CategoryCommand.Length));
@@ -100,10 +104,10 @@
                     if (DateOnly.TryParse(input.Substring(DueDateCommand.Length), out DateOnly dueDate))
                         taskBuilder.SetDueDate(dueDate);
                     else
-                        Console.WriteLine("Due date not recognized.");
+                        ui.WriteLine("Due date not recognized.");
                 }
                 else
-                    Console.WriteLine("Unknown command");
+                    ui.WriteLine("Unknown command");
             }
         }
 
@@ -111,17 +115,17 @@
         {
             var tasks = taskManager.GetTasks();
             foreach (var task in tasks)
-                Console.WriteLine(task.ToText());
+                ui.WriteLine(task.ToText());
         }
 
         private void UpdateTaskById()
         {
             string? input;
 
-            Console.WriteLine("Enter the task id:");
+            ui.WriteLine("Enter the task id:");
             while (true)
             {
-                input = Console.ReadLine();
+                input = ui.ReadLine();
                 if (!string.IsNullOrEmpty(input))
                 {
                     if (int.TryParse(input, out int taskId))
@@ -133,37 +137,37 @@
                             break;
                         }
                         else
-                            Console.WriteLine("Task not found.");
+                            ui.WriteLine("Task not found.");
                     }
                     else
-                        Console.WriteLine("Task id must be a number.");
+                        ui.WriteLine("Task id must be a number.");
                 }
                 else
                     break;
             }
 
             TaskBuilderDialog();
-            Console.WriteLine("Task updated.");
+            ui.WriteLine("Task updated.");
         }
 
         private void DeleteTaskById()
         {
             string? input;
 
-            Console.WriteLine("Enter the task id:");
-            input = Console.ReadLine();
+            ui.WriteLine("Enter the task id:");
+            input = ui.ReadLine();
             if (!string.IsNullOrEmpty(input))
             {
                 if (int.TryParse(input, out int taskId))
                 {
                     bool deleted = taskManager.DeleteTask(taskId);
                     if (deleted)
-                        Console.WriteLine("Task deleted.");
+                        ui.WriteLine("Task deleted.");
                     else
-                        Console.WriteLine("Task not found.");
+                        ui.WriteLine("Task not found.");
                 }
                 else
-                    Console.WriteLine("Task id must be a number.");
+                    ui.WriteLine("Task id must be a number.");
             }
         }
 
@@ -171,17 +175,17 @@
         {
             string? input;
 
-            Console.WriteLine("Enter the search keyword:");
-            input = Console.ReadLine();
+            ui.WriteLine("Enter the search keyword:");
+            input = ui.ReadLine();
             if (!string.IsNullOrEmpty(input))
             {
                 var foundTasks = taskManager.FindByKeyword(input);
                 if (foundTasks == null || foundTasks.Count == 0)
-                    Console.WriteLine("No tasks found.");
+                    ui.WriteLine("No tasks found.");
                 else
                 {
                     foreach (var task in foundTasks)
-                        Console.WriteLine(task.ToText());
+                        ui.WriteLine(task.ToText());
                 }
             }
         }
