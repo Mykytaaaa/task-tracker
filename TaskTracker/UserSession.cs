@@ -2,18 +2,19 @@
 
 namespace TaskTracker
 {
-    internal class UserSession
+    public class UserSession
     {
-        private const string AddTaskCommand = "add";
-        private const string ListAllCommand = "list";
-        private const string UpdateTaskByIdCommand = "update";
-        private const string DeleteTaskByIdCommand = "delete";
-        private const string FindTaskByKeywordCommand = "find";
+        public const string AddTaskCommand = "add";
+        public const string ListAllCommand = "list";
+        public const string UpdateTaskByIdCommand = "update";
+        public const string DeleteTaskByIdCommand = "delete";
+        public const string FindTaskByKeywordCommand = "find";
+        public const string QuitCommand = "quit";
 
-        private const string DescriptionCommand = "desc: ";
-        private const string PriorityCommand = "priority: ";
-        private const string CategoryCommand = "category: ";
-        private const string DueDateCommand = "due: ";
+        public const string DescriptionCommand = "desc: ";
+        public const string PriorityCommand = "priority: ";
+        public const string CategoryCommand = "category: ";
+        public const string DueDateCommand = "due: ";
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
@@ -28,6 +29,7 @@ namespace TaskTracker
         public void HandleUser()
         {
             ui.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, and find by keyword using \"{FindTaskByKeywordCommand}\" command.");
+            ui.WriteLine($"Type \"{QuitCommand}\" to exit the application.");
 
             string? input;
             while (true)
@@ -45,6 +47,8 @@ namespace TaskTracker
                         DeleteTaskById();
                     else if (input.Equals(FindTaskByKeywordCommand, StringComparison.InvariantCultureIgnoreCase))
                         FindTaskByKeyword();
+                    else if (input.Equals(QuitCommand, StringComparison.InvariantCultureIgnoreCase))
+                        break; // Quit session loop
                     else
                         ui.WriteLine("Unknown command");
                 }
