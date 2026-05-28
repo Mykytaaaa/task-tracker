@@ -42,5 +42,106 @@ namespace TaskTrackerTest
             bool deleted = taskManager.DeleteTask(task.Id + 1);
             Assert.False(deleted);
         }
+
+        [Fact]
+        public void ThreeTasks_FindSecondByKeywordInDesc_ReturnsSecondTask()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetTitle($"Task {i}");
+                taskBuilder.SetDescription($"Task {i} fine description");
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword($"Task 1 fine");
+            Assert.Single(foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
+
+        [Fact]
+        public void ThreeTasks_Find1And2ByKeywordInDesc_ReturnsTasks1And2()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            string[] taskDescriptions = new string[]
+            {
+                "Buy apples",
+                "Eat apples",
+                "Do homework"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetTitle($"Task {i}");
+                taskBuilder.SetDescription(taskDescriptions[i]);
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword("apples");
+            Assert.Equal(2, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
+
+        [Fact]
+        public void ThreeTasks_Find1And2ByKeywordInDescDifferentCase_ReturnsTasks1And2()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            string[] taskDescriptions = new string[]
+            {
+                "Buy Apples",
+                "Eat apples",
+                "Do homework"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetTitle($"Task {i}");
+                taskBuilder.SetDescription(taskDescriptions[i]);
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword("apples");
+            Assert.Equal(2, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
+
+        [Fact]
+        public void ThreeTasks_FindInexistentByKeywordInDesc_ReturnsEmptyList()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetTitle($"Task {i}");
+                taskBuilder.SetDescription($"Task {i} fine description");
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword($"apples");
+            Assert.Empty(foundTasks);
+        }
     }
 }
