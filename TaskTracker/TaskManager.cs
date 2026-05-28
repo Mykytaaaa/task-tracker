@@ -37,7 +37,7 @@ namespace TaskTracker
             List<Task> list = new();
             foreach (var task in tasks)
             {
-                if (task.Title.Contains(keyword)
+                if (task.Title.Contains(keyword, StringComparison.InvariantCultureIgnoreCase)
                     || task.Description != null && task.Description.Contains(keyword, StringComparison.InvariantCultureIgnoreCase)
                     || task.Category != null && task.Category.Contains(keyword, StringComparison.InvariantCultureIgnoreCase)
                     )
