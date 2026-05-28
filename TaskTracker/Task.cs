@@ -3,7 +3,7 @@
     public class Task
     {
         public int Id { get; private set; }
-        public string? Title;
+        public string Title;
         public string? Description;
         public int Priority;
         public string? Category;
