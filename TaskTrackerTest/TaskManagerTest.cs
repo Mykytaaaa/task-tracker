@@ -143,5 +143,62 @@ namespace TaskTrackerTest
             var foundTasks = taskManager.FindByKeyword($"apples");
             Assert.Empty(foundTasks);
         }
+
+        [Fact]
+        public void ThreeTasks_Find1And2ByKeywordInTitleDifferentCase_ReturnsTasks1And2()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            string[] taskTitles = new string[]
+            {
+                "Buy Apples",
+                "Eat apples",
+                "Do homework"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetTitle(taskTitles[i]);
+                taskBuilder.SetDescription($"Task {i}");
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword("apples");
+            Assert.Equal(2, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
+
+        [Fact]
+        public void ThreeTasks_Find1And2ByKeywordInCategoryDifferentCase_ReturnsTasks1And2()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            string[] taskCategories = new string[]
+            {
+                "Buy Apples",
+                "Eat apples",
+                "Do homework"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetCategory(taskCategories[i]);
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FindByKeyword("apples");
+            Assert.Equal(2, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
     }
 }
