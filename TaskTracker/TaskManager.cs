@@ -1,4 +1,6 @@
-﻿namespace TaskTracker
+﻿using System.Collections.Generic;
+
+namespace TaskTracker
 {
     public class TaskManager
     {
@@ -28,6 +30,20 @@
                 return true;
             }
             return false;
+        }
+
+        public List<Task> FindByKeyword(string keyword)
+        {
+            List<Task> list = new();
+            foreach (var task in tasks)
+            {
+                if (task.Title.Contains(keyword)
+                    || task.Description != null && task.Description.Contains(keyword, StringComparison.InvariantCultureIgnoreCase)
+                    || task.Category != null && task.Category.Contains(keyword, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                    list.Add(task);
+            }
+            return list;
         }
     }
 }
