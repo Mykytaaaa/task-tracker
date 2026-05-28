@@ -6,6 +6,7 @@
         private const string ListAllCommand = "list";
         private const string UpdateTaskByIdCommand = "update";
         private const string DeleteTaskByIdCommand = "delete";
+        private const string FindTaskByKeywordCommand = "find";
 
         private const string DescriptionCommand = "desc: ";
         private const string PriorityCommand = "priority: ";
@@ -22,7 +23,7 @@
 
         public void HandleUser()
         {
-            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command and delete by \"{DeleteTaskByIdCommand}\" command.");
+            Console.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, and find by keyword using \"{FindTaskByKeywordCommand}\" command.");
 
             string? input;
             while (true)
@@ -38,6 +39,8 @@
                         UpdateTaskById();
                     else if (input.Equals(DeleteTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
                         DeleteTaskById();
+                    else if (input.Equals(FindTaskByKeywordCommand, StringComparison.InvariantCultureIgnoreCase))
+                        FindTaskByKeyword();
                     else
                         Console.WriteLine("Unknown command");
                 }
@@ -161,6 +164,25 @@
                 }
                 else
                     Console.WriteLine("Task id must be a number.");
+            }
+        }
+
+        private void FindTaskByKeyword()
+        {
+            string? input;
+
+            Console.WriteLine("Enter the search keyword:");
+            input = Console.ReadLine();
+            if (!string.IsNullOrEmpty(input))
+            {
+                var foundTasks = taskManager.FindByKeyword(input);
+                if (foundTasks == null || foundTasks.Count == 0)
+                    Console.WriteLine("No tasks found.");
+                else
+                {
+                    foreach (var task in foundTasks)
+                        Console.WriteLine(task.ToText());
+                }
             }
         }
     }
