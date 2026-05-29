@@ -12,15 +12,20 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
       run: dotnet restore TaskTracker.sln
+
+    - name: Run analysis
+      run: |
+        dotnet format style TaskTracker.sln --verify-no-changes --no-restore
+        dotnet format analyzers TaskTracker.sln --verify-no-changes --no-restore
 
     - name: Build Solution
       run: dotnet build TaskTracker.sln --configuration Release --no-restore
