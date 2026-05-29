@@ -25,7 +25,13 @@ jobs:
     - name: Run analysis
       run: |
         dotnet format style TaskTracker.sln --verify-no-changes --no-restore
-        dotnet format analyzers TaskTracker.sln --verify-no-changes --no-restore --collect:"XPlat Code Coverage" --results-directory ./coverage
+        dotnet format analyzers TaskTracker.sln --verify-no-changes --no-restore
+
+    - name: Build Solution
+      run: dotnet build TaskTracker.sln --configuration Release --no-restore
+
+    - name: Run Tests
+      run: dotnet test TaskTracker.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Generate coverage report
       uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
@@ -37,9 +43,3 @@ jobs:
     - name: Publish coverage report to job summary
       run: |
         cat coverage/summary/Summary.md >> $env:GITHUB_STEP_SUMMARY
-
-    - name: Build Solution
-      run: dotnet build TaskTracker.sln --configuration Release --no-restore
-
-    - name: Run Tests
-      run: dotnet test TaskTracker.sln --configuration Release --no-build --verbosity normal
