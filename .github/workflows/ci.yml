@@ -31,4 +31,15 @@ jobs:
       run: dotnet build TaskTracker.sln --configuration Release --no-restore
 
     - name: Run Tests
-      run: dotnet test TaskTracker.sln --configuration Release --no-build --verbosity normal
+      run: dotnet test TaskTracker.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+    - name: Generate coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
+      with:
+        reports: 'coverage/**/coverage.cobertura.xml'
+        targetdir: 'coverage/summary'
+        reporttypes: 'MarkdownSummary'
+
+    - name: Publish coverage report to job summary
+      run: |
+        cat coverage/summary/Summary.md >> $env:GITHUB_STEP_SUMMARY
