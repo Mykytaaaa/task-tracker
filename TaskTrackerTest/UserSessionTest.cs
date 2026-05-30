@@ -149,7 +149,7 @@ namespace TaskTrackerTest
             uiMock.userInput.Add(string.Empty);
 
             uiMock.userInput.Add(UserSession.FilterTasksCommand);
-            uiMock.userInput.Add(UserSession.FilterTasksByCategoryCommand + "home");
+            uiMock.userInput.Add(UserSession.SetFilteringByCategoryCommand + "home");
             uiMock.userInput.Add(UserSession.QuitCommand);
 
             userSession.HandleUser();
@@ -181,7 +181,7 @@ namespace TaskTrackerTest
             uiMock.userInput.Add(string.Empty);
 
             uiMock.userInput.Add(UserSession.FilterTasksCommand);
-            uiMock.userInput.Add(UserSession.FilterTasksByCategoryCommand + "Cooking");
+            uiMock.userInput.Add(UserSession.SetFilteringByCategoryCommand + "Cooking");
             uiMock.userInput.Add(UserSession.QuitCommand);
 
             userSession.HandleUser();
@@ -213,7 +213,7 @@ namespace TaskTrackerTest
             uiMock.userInput.Add(string.Empty);
 
             uiMock.userInput.Add(UserSession.FilterTasksCommand);
-            uiMock.userInput.Add(UserSession.FilterTasksByDueDateCommand + "11.01.2026-12.01.2026");
+            uiMock.userInput.Add(UserSession.SetFilteringByDueDateCommand + "11.01.2026-12.01.2026");
             uiMock.userInput.Add(UserSession.QuitCommand);
 
             userSession.HandleUser();
@@ -245,7 +245,7 @@ namespace TaskTrackerTest
             uiMock.userInput.Add(string.Empty);
 
             uiMock.userInput.Add(UserSession.FilterTasksCommand);
-            uiMock.userInput.Add(UserSession.FilterTasksByDueDateCommand + "11.01.2027-12.01.2027");
+            uiMock.userInput.Add(UserSession.SetFilteringByDueDateCommand + "11.01.2027-12.01.2027");
             uiMock.userInput.Add(UserSession.QuitCommand);
 
             userSession.HandleUser();

@@ -17,8 +17,8 @@ namespace TaskTracker
         public const string SetCategoryCommand = "category: ";
         public const string SetDueDateCommand = "due: ";
 
-        public const string FilterTasksByCategoryCommand = "category: ";
-        public const string FilterTasksByDueDateCommand = "due: ";
+        public const string SetFilteringByCategoryCommand = "category: ";
+        public const string SetFilteringByDueDateCommand = "due: ";
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
@@ -202,19 +202,19 @@ namespace TaskTracker
 
         private void FilterTasks()
         {
-            ui.WriteLine($"Use \"{FilterTasksByCategoryCommand} <category>\" to filter by category");
-            ui.WriteLine($"Use \"{FilterTasksByDueDateCommand} <mm.dd.yyyy-mm.dd.yyyy>\" to filter by due date range .");
+            ui.WriteLine($"Use \"{SetFilteringByCategoryCommand} <category>\" to filter by category");
+            ui.WriteLine($"Use \"{SetFilteringByDueDateCommand} <mm.dd.yyyy-mm.dd.yyyy>\" to filter by due date range .");
             string? input;
 
             input = ui.ReadLine();
             if (!string.IsNullOrEmpty(input))
             {
                 List<Task>? tasks = null;
-                if (input.StartsWith(FilterTasksByCategoryCommand, true, null))
-                    tasks = taskManager.FilterByCategory(input.Substring(FilterTasksByCategoryCommand.Length));
-                else if (input.StartsWith(FilterTasksByDueDateCommand, true, null))
+                if (input.StartsWith(SetFilteringByCategoryCommand, true, null))
+                    tasks = taskManager.FilterByCategory(input.Substring(SetFilteringByCategoryCommand.Length));
+                else if (input.StartsWith(SetFilteringByDueDateCommand, true, null))
                 {
-                    string[] dates = input.Substring(FilterTasksByDueDateCommand.Length).Split('-');
+                    string[] dates = input.Substring(SetFilteringByDueDateCommand.Length).Split('-');
                     if (dates.Length == 2)
                     {
                         if (!DateOnly.TryParse(dates[0], out DateOnly dateFrom))
