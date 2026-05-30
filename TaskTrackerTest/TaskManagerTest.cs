@@ -200,5 +200,66 @@ namespace TaskTrackerTest
             Assert.Contains(tasks[0], foundTasks);
             Assert.Contains(tasks[1], foundTasks);
         }
+
+        [Fact]
+        public void ThreeTasksWithCategories_FilterByCategory_ReturnsTasksWithThatCategory()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            string[] taskCategories = new string[]
+            {
+                "Home",
+                "home",
+                "Cook"
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetCategory(taskCategories[i]);
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var foundTasks = taskManager.FilterByCategory("Home");
+            Assert.Equal(2, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+        }
+
+        [Fact]
+        public void FiveTasksWithDueDates_FilterByDueDate_ReturnsTasksWithinDueDateRange()
+        {
+            TaskManager taskManager = new();
+            TaskBuilder taskBuilder = new();
+
+            List<Task> tasks = new();
+            DateOnly[] taskDueDates = new DateOnly[]
+            {
+                DateOnly.Parse("02.01.2026"),
+                DateOnly.Parse("08.02.2026"),
+                DateOnly.Parse("05.02.2026"),
+                DateOnly.Parse("03.01.2026"),
+                DateOnly.Parse("09.02.2026")
+            };
+            for (int i = 0; i < 3; i++)
+            {
+                taskBuilder.Reset();
+                taskBuilder.SetDueDate(taskDueDates[i]);
+                var task = taskBuilder.GetResult();
+                taskManager.AddTask(task);
+                tasks.Add(task);
+            }
+
+            var dateFrom = DateOnly.Parse("02.01.2026");
+            var dateTo = DateOnly.Parse("08.02.2026");
+            var foundTasks = taskManager.FilterByDueDate(dateFrom, dateTo);
+            Assert.Equal(3, foundTasks.Count);
+            Assert.Contains(tasks[0], foundTasks);
+            Assert.Contains(tasks[1], foundTasks);
+            Assert.Contains(tasks[2], foundTasks);
+        }
     }
 }
