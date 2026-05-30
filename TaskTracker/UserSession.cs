@@ -1,4 +1,5 @@
-﻿using TaskTracker.UI;
+﻿using TaskTracker.TaskSortStrategies;
+using TaskTracker.UI;
 
 namespace TaskTracker
 {
@@ -10,6 +11,7 @@ namespace TaskTracker
         public const string DeleteTaskByIdCommand = "delete";
         public const string FindTaskByKeywordCommand = "find";
         public const string FilterTasksCommand = "filter";
+        public const string SortTasksCommand = "sort";
         public const string QuitCommand = "quit";
 
         public const string SetDescriptionCommand = "desc: ";
@@ -19,6 +21,9 @@ namespace TaskTracker
 
         public const string SetFilteringByCategoryCommand = "category: ";
         public const string SetFilteringByDueDateCommand = "due: ";
+
+        public const string SetSortByPriorityCommand = "priority";
+        public const string SetSortByDueDateCommand = "due";
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
@@ -53,6 +58,8 @@ namespace TaskTracker
                         FindTaskByKeyword();
                     else if (input.Equals(FilterTasksCommand, StringComparison.OrdinalIgnoreCase))
                         FilterTasks();
+                    else if (input.Equals(SortTasksCommand, StringComparison.OrdinalIgnoreCase))
+                        SortTasks();
                     else if (input.Equals(QuitCommand, StringComparison.OrdinalIgnoreCase))
                         break; // Quit session loop
                     else
@@ -236,6 +243,33 @@ namespace TaskTracker
                 else
                     ui.WriteLine("Unknown command.");
                 
+                if (tasks == null || tasks.Count == 0)
+                    ui.WriteLine("No tasks found.");
+                else
+                {
+                    foreach (var task in tasks)
+                        ui.WriteLine(task.ToText());
+                }
+            }
+        }
+
+        private void SortTasks()
+        {
+            ui.WriteLine($"Use \"{SetSortByPriorityCommand}\" to sort by priority");
+            ui.WriteLine($"Use \"{SetSortByDueDateCommand}\" to sort by due date.");
+            string? input;
+
+            input = ui.ReadLine();
+            if (!string.IsNullOrEmpty(input))
+            {
+                List<Task>? tasks = null;
+                if (input.StartsWith(SetSortByPriorityCommand, true, null))
+                    tasks = taskManager.SortTasks(new TaskComparerByPriority());
+                else if (input.StartsWith(SetSortByDueDateCommand, true, null))
+                    tasks = taskManager.SortTasks(new TaskComparerByDueDate());
+                else
+                    ui.WriteLine("Unknown command.");
+
                 if (tasks == null || tasks.Count == 0)
                     ui.WriteLine("No tasks found.");
                 else

@@ -55,5 +55,15 @@ namespace TaskTracker
         {
             return tasks.FindAll(t => t.HasDueDate() && t.DueDate >= from && t.DueDate <= to);
         }
+        
+        public List<Task> SortTasks(IComparer<Task> taskComparer)
+        {
+            var sortedTasks = new List<Task>(tasks.Count);
+            foreach (var task in tasks)
+                sortedTasks.Add(task);
+
+            sortedTasks.Sort(taskComparer);
+            return sortedTasks;
+        }
     }
 }
