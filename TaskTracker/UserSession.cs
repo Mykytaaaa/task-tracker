@@ -9,12 +9,16 @@ namespace TaskTracker
         public const string UpdateTaskByIdCommand = "update";
         public const string DeleteTaskByIdCommand = "delete";
         public const string FindTaskByKeywordCommand = "find";
+        public const string FilterTasksCommand = "filter";
         public const string QuitCommand = "quit";
 
         public const string SetDescriptionCommand = "desc: ";
         public const string SetPriorityCommand = "priority: ";
         public const string SetCategoryCommand = "category: ";
         public const string SetDueDateCommand = "due: ";
+
+        public const string SetFilteringByCategoryCommand = "category: ";
+        public const string SetFilteringByDueDateCommand = "due: ";
 
         private TaskManager taskManager;
         private TaskBuilder taskBuilder = new();
@@ -47,6 +51,8 @@ namespace TaskTracker
                         DeleteTaskById();
                     else if (input.Equals(FindTaskByKeywordCommand, StringComparison.OrdinalIgnoreCase))
                         FindTaskByKeyword();
+                    else if (input.Equals(FilterTasksCommand, StringComparison.OrdinalIgnoreCase))
+                        FilterTasks();
                     else if (input.Equals(QuitCommand, StringComparison.OrdinalIgnoreCase))
                         break; // Quit session loop
                     else
@@ -189,6 +195,52 @@ namespace TaskTracker
                 else
                 {
                     foreach (var task in foundTasks)
+                        ui.WriteLine(task.ToText());
+                }
+            }
+        }
+
+        private void FilterTasks()
+        {
+            ui.WriteLine($"Use \"{SetFilteringByCategoryCommand} <category>\" to filter by category");
+            ui.WriteLine($"Use \"{SetFilteringByDueDateCommand} <mm.dd.yyyy-mm.dd.yyyy>\" to filter by due date range .");
+            string? input;
+
+            input = ui.ReadLine();
+            if (!string.IsNullOrEmpty(input))
+            {
+                List<Task>? tasks = null;
+                if (input.StartsWith(SetFilteringByCategoryCommand, true, null))
+                    tasks = taskManager.FilterByCategory(input.Substring(SetFilteringByCategoryCommand.Length));
+                else if (input.StartsWith(SetFilteringByDueDateCommand, true, null))
+                {
+                    string[] dates = input.Substring(SetFilteringByDueDateCommand.Length).Split('-');
+                    if (dates.Length == 2)
+                    {
+                        if (!DateOnly.TryParse(dates[0], out DateOnly dateFrom))
+                        {
+                            ui.WriteLine("Date 1 is in wrong format.");
+                        }
+                        else if (!DateOnly.TryParse(dates[1], out DateOnly dateTo))
+                        {
+                            ui.WriteLine("Date 2 is in wrong format.");
+                        }
+                        else
+                        {
+                            tasks = taskManager.FilterByDueDate(dateFrom, dateTo);
+                        }
+                    }
+                    else
+                        ui.WriteLine("Please specify a range of two dates.");
+                }
+                else
+                    ui.WriteLine("Unknown command.");
+                
+                if (tasks == null || tasks.Count == 0)
+                    ui.WriteLine("No tasks found.");
+                else
+                {
+                    foreach (var task in tasks)
                         ui.WriteLine(task.ToText());
                 }
             }

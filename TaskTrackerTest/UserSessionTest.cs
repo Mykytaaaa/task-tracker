@@ -126,5 +126,133 @@ namespace TaskTrackerTest
             Assert.True(uiMock.output.Contains("11.11.2026")
                     || uiMock.output.Contains("11/11/2026"));
         }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenFilterByCategory_OutputContainsFilteredTasks()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Home");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Rest");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "home");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.FilterTasksCommand);
+            uiMock.userInput.Add(UserSession.SetFilteringByCategoryCommand + "home");
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            Assert.Contains("Buy eggs", uiMock.output);
+            Assert.Contains("Cook eggs", uiMock.output);
+            Assert.DoesNotContain("Go for a walk", uiMock.output);
+        }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenFilterByInexistingCategory_OutputContainsNoTasks()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Home");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Rest");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "home");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.FilterTasksCommand);
+            uiMock.userInput.Add(UserSession.SetFilteringByCategoryCommand + "Cooking");
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            Assert.DoesNotContain("Buy eggs", uiMock.output);
+            Assert.DoesNotContain("Cook eggs", uiMock.output);
+            Assert.DoesNotContain("Go for a walk", uiMock.output);
+        }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenFilterByDueDate_OutputContainsFilteredTasks()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "10.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "12.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "11.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.FilterTasksCommand);
+            uiMock.userInput.Add(UserSession.SetFilteringByDueDateCommand + "11.01.2026-12.01.2026");
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            Assert.Contains("Go for a walk", uiMock.output);
+            Assert.Contains("Cook eggs", uiMock.output);
+            Assert.DoesNotContain("Buy eggs", uiMock.output);
+        }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenFilterByInexistentDueDateRange_OutputContainsNoTasks()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "10.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "12.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "11.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.FilterTasksCommand);
+            uiMock.userInput.Add(UserSession.SetFilteringByDueDateCommand + "11.01.2027-12.01.2027");
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            Assert.DoesNotContain("Go for a walk", uiMock.output);
+            Assert.DoesNotContain("Cook eggs", uiMock.output);
+            Assert.DoesNotContain("Buy eggs", uiMock.output);
+        }
     }
 }
