@@ -45,5 +45,15 @@ namespace TaskTracker
             }
             return list;
         }
+
+        public List<Task> FilterByCategory(string category)
+        {
+            return tasks.FindAll(t => category.Equals(t.Category, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public List<Task> FilterByDueDate(DateOnly from, DateOnly to)
+        {
+            return tasks.FindAll(t => t.HasDueDate() && t.DueDate >= from && t.DueDate <= to);
+        }
     }
 }
