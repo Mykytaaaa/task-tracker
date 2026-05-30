@@ -5,11 +5,6 @@
         private Task task;
         private int nextTaskId = 0;
 
-        /*public TaskBuilder()
-        {
-            Reset();
-        }*/
-
         public TaskBuilder Reset()
         {
             task = new Task(nextTaskId++);

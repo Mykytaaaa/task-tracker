@@ -37,17 +37,17 @@ namespace TaskTracker
                 input = ui.ReadLine();
                 if (!string.IsNullOrEmpty(input))
                 {
-                    if (input.Equals(AddTaskCommand, StringComparison.InvariantCultureIgnoreCase))
+                    if (input.Equals(AddTaskCommand, StringComparison.OrdinalIgnoreCase))
                         AddTask();
-                    else if (input.Equals(ListAllCommand, StringComparison.InvariantCultureIgnoreCase))
+                    else if (input.Equals(ListAllCommand, StringComparison.OrdinalIgnoreCase))
                         ListAll();
-                    else if (input.Equals(UpdateTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
+                    else if (input.Equals(UpdateTaskByIdCommand, StringComparison.OrdinalIgnoreCase))
                         UpdateTaskById();
-                    else if (input.Equals(DeleteTaskByIdCommand, StringComparison.InvariantCultureIgnoreCase))
+                    else if (input.Equals(DeleteTaskByIdCommand, StringComparison.OrdinalIgnoreCase))
                         DeleteTaskById();
-                    else if (input.Equals(FindTaskByKeywordCommand, StringComparison.InvariantCultureIgnoreCase))
+                    else if (input.Equals(FindTaskByKeywordCommand, StringComparison.OrdinalIgnoreCase))
                         FindTaskByKeyword();
-                    else if (input.Equals(QuitCommand, StringComparison.InvariantCultureIgnoreCase))
+                    else if (input.Equals(QuitCommand, StringComparison.OrdinalIgnoreCase))
                         break; // Quit session loop
                     else
                         ui.WriteLine("Unknown command");
@@ -96,7 +96,7 @@ namespace TaskTracker
                     taskBuilder.SetDescription(input.Substring(SetDescriptionCommand.Length));
                 else if (input.StartsWith(SetPriorityCommand, true, null))
                 {
-                    if (int.TryParse(input.Substring(SetPriorityCommand.Length), out int priority))
+                    if (int.TryParse(input.AsSpan(SetPriorityCommand.Length), out int priority))
                         taskBuilder.SetPriority(priority);
                     else
                         ui.WriteLine("Priority must be a number.");
@@ -105,7 +105,7 @@ namespace TaskTracker
                     taskBuilder.SetCategory(input.Substring(SetCategoryCommand.Length));
                 else if (input.StartsWith(SetDueDateCommand, true, null))
                 {
-                    if (DateOnly.TryParse(input.Substring(SetDueDateCommand.Length), out DateOnly dueDate))
+                    if (DateOnly.TryParse(input.AsSpan(SetDueDateCommand.Length), out DateOnly dueDate))
                         taskBuilder.SetDueDate(dueDate);
                     else
                         ui.WriteLine("Due date not recognized.");
