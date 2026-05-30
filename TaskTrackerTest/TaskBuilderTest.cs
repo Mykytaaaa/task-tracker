@@ -88,5 +88,12 @@ namespace TaskTrackerTest
             Assert.NotNull(task);
             Assert.Equal(dueDate, task.DueDate);
         }
+
+        [Fact]
+        public void BuilderNotReset_ThenGetResult_ThrowsException()
+        {
+            TaskBuilder taskBuilder = new();
+            Assert.Throws<BuilderNotResetException>(taskBuilder.GetResult);
+        }
     }
 }
