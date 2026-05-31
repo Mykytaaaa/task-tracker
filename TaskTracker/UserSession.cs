@@ -1,4 +1,5 @@
-﻿using TaskTracker.TaskSortStrategies;
+﻿using TaskTracker.FileSavers;
+using TaskTracker.TaskSortStrategies;
 using TaskTracker.UI;
 
 namespace TaskTracker
@@ -13,6 +14,7 @@ namespace TaskTracker
         public const string FilterTasksCommand = "filter";
         public const string SortTasksCommand = "sort";
         public const string ShowSummaryCommand = "summary";
+        public const string ExportCsvCommand = "export csv";
         public const string QuitCommand = "quit";
 
         public const string SetDescriptionCommand = "desc: ";
@@ -40,6 +42,7 @@ namespace TaskTracker
         public void HandleUser()
         {
             ui.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, find by keyword using \"{FindTaskByKeywordCommand}\" command, and request tasks summary by \"{ShowSummaryCommand}\" command.");
+            ui.WriteLine($"Type \"{ExportCsvCommand}\" to export tasks as CSV.");
             ui.WriteLine($"Type \"{QuitCommand}\" to exit the application.");
 
             string? input;
@@ -64,6 +67,8 @@ namespace TaskTracker
                         SortTasks();
                     else if (input.Equals(ShowSummaryCommand, StringComparison.OrdinalIgnoreCase))
                         ShowSummary();
+                    else if (input.Equals(ExportCsvCommand, StringComparison.OrdinalIgnoreCase))
+                        ExportCsv();
                     else if (input.Equals(QuitCommand, StringComparison.OrdinalIgnoreCase))
                         break; // Quit session loop
                     else
@@ -315,6 +320,14 @@ namespace TaskTracker
                 }
                 ui.WriteLine("Uncategorized: " + uncategorizedTasks);
             }
+        }
+
+        private void ExportCsv()
+        {
+            var csvSaver = new CsvFileSaver();
+            var path = AppContext.BaseDirectory + Program.relativeExportPath;
+            csvSaver.Save(path, taskManager.GetTasks());
+            ui.WriteLine("Exported as CSV to " + path);
         }
     }
 }

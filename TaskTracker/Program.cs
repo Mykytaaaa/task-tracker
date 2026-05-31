@@ -5,7 +5,7 @@ namespace TaskTracker
 {
     internal class Program
     {
-        private const string relativeExportPath = "tasks-data-export\\";
+        public const string relativeExportPath = "tasks-data-export\\";
 
         static void Main(string[] args)
         {
