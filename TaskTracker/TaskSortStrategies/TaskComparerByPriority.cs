@@ -4,11 +4,15 @@
     {
         public int Compare(Task? x, Task? y)
         {
-            bool xHasPriority = x != null && x.HasPriority();
-            bool yHasPriority = y != null && y.HasPriority();
+            bool xHasPriority = x != null && x.Priority != null;
+            bool yHasPriority = y != null && y.Priority != null;
 
             if (xHasPriority && yHasPriority)
-                return x.Priority.CompareTo(y.Priority);
+            {
+                int notNullablePriorityX = (int)x.Priority;
+                int notNullablePriorityY = (int)y.Priority;
+                return notNullablePriorityX.CompareTo(notNullablePriorityY);
+            }
             else if (xHasPriority && !yHasPriority)
                 return -1;
             else if (!xHasPriority && yHasPriority)

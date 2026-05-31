@@ -4,12 +4,14 @@ namespace TaskTracker.FileSavers
 {
     internal class JsonFileSaver : IFileSaver
     {
+        private const string filename = "tasks.json";
+
         public void Save(string path, List<Task> tasks)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            using (FileStream stream = new FileStream(path + "tasks.json", FileMode.OpenOrCreate, FileAccess.Write))
+            using (FileStream stream = new FileStream(path + filename, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 Utf8JsonWriter writer = new(stream);
                 JsonSerializer.Serialize(writer, tasks);
@@ -18,10 +20,10 @@ namespace TaskTracker.FileSavers
 
         public List<Task>? Load(string path)
         {
-            if (!Directory.Exists(path) || !File.Exists(path + "tasks.json"))
+            if (!Directory.Exists(path) || !File.Exists(path + filename))
                 return null;
 
-            using (FileStream stream = new FileStream(path + "tasks.json", FileMode.Open, FileAccess.Read))
+            using (FileStream stream = new FileStream(path + filename, FileMode.Open, FileAccess.Read))
             {
                 return JsonSerializer.Deserialize<List<Task>>(stream);
             }

@@ -140,8 +140,18 @@ namespace TaskTracker
         private void ListAll()
         {
             var tasks = taskManager.GetTasks();
-            foreach (var task in tasks)
-                ui.WriteLine(task.ToText());
+            ListTasks(tasks);
+        }
+
+        private void ListTasks(List<Task>? tasks)
+        {
+            if (tasks == null || tasks.Count == 0)
+                ui.WriteLine("No tasks found.");
+            else
+            {
+                foreach (var task in tasks)
+                    ui.WriteLine(task.ToText());
+            }
         }
 
         private void UpdateTaskById()
@@ -206,13 +216,7 @@ namespace TaskTracker
             if (!string.IsNullOrEmpty(input))
             {
                 var foundTasks = taskManager.FindByKeyword(input);
-                if (foundTasks == null || foundTasks.Count == 0)
-                    ui.WriteLine("No tasks found.");
-                else
-                {
-                    foreach (var task in foundTasks)
-                        ui.WriteLine(task.ToText());
-                }
+                ListTasks(foundTasks);
             }
         }
 
@@ -251,14 +255,8 @@ namespace TaskTracker
                 }
                 else
                     ui.WriteLine("Unknown command.");
-                
-                if (tasks == null || tasks.Count == 0)
-                    ui.WriteLine("No tasks found.");
-                else
-                {
-                    foreach (var task in tasks)
-                        ui.WriteLine(task.ToText());
-                }
+
+                ListTasks(tasks);
             }
         }
 
@@ -279,13 +277,7 @@ namespace TaskTracker
                 else
                     ui.WriteLine("Unknown command.");
 
-                if (tasks == null || tasks.Count == 0)
-                    ui.WriteLine("No tasks found.");
-                else
-                {
-                    foreach (var task in tasks)
-                        ui.WriteLine(task.ToText());
-                }
+                ListTasks(tasks);
             }
         }
 
@@ -297,7 +289,7 @@ namespace TaskTracker
 
             int overdueTasks = 0;
             foreach (var task in tasks)
-                if (task.HasDueDate() && task.DueDate < DateOnly.FromDateTime(DateTime.Now))
+                if (task.DueDate != null && task.DueDate < DateOnly.FromDateTime(DateTime.Now))
                     overdueTasks++;
             ui.WriteLine($"{overdueTasks} overdue tasks;");
 

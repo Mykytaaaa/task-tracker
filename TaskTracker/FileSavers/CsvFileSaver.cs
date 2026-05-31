@@ -12,7 +12,7 @@
                 writer.WriteLine("Id,Title,Description,Priority,Category,DueDate");
                 foreach (Task task in tasks)
                 {
-                    writer.WriteLine($"{task.Id},\"{task.Title}\",\"{task.Description}\",{(task.HasPriority() ? task.Priority : null)},\"{task.Category}\",{(task.HasDueDate() ? task.DueDate : null)}");
+                    writer.WriteLine($"{task.Id},\"{task.Title}\",\"{task.Description}\",{task.Priority},\"{task.Category}\",{task.DueDate}");
                 }
                 writer.Flush();
             }
