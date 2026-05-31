@@ -12,6 +12,7 @@ namespace TaskTracker
         public const string FindTaskByKeywordCommand = "find";
         public const string FilterTasksCommand = "filter";
         public const string SortTasksCommand = "sort";
+        public const string ShowSummaryCommand = "summary";
         public const string QuitCommand = "quit";
 
         public const string SetDescriptionCommand = "desc: ";
@@ -38,7 +39,7 @@ namespace TaskTracker
 
         public void HandleUser()
         {
-            ui.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, and find by keyword using \"{FindTaskByKeywordCommand}\" command.");
+            ui.WriteLine($"You can add tasks by typing \"{AddTaskCommand}\" command, view them by \"{ListAllCommand}\" command, update by \"{UpdateTaskByIdCommand}\" command, delete by \"{DeleteTaskByIdCommand}\" command, find by keyword using \"{FindTaskByKeywordCommand}\" command, and request tasks summary by \"{ShowSummaryCommand}\" command.");
             ui.WriteLine($"Type \"{QuitCommand}\" to exit the application.");
 
             string? input;
@@ -61,6 +62,8 @@ namespace TaskTracker
                         FilterTasks();
                     else if (input.Equals(SortTasksCommand, StringComparison.OrdinalIgnoreCase))
                         SortTasks();
+                    else if (input.Equals(ShowSummaryCommand, StringComparison.OrdinalIgnoreCase))
+                        ShowSummary();
                     else if (input.Equals(QuitCommand, StringComparison.OrdinalIgnoreCase))
                         break; // Quit session loop
                     else
@@ -278,6 +281,39 @@ namespace TaskTracker
                     foreach (var task in tasks)
                         ui.WriteLine(task.ToText());
                 }
+            }
+        }
+
+        private void ShowSummary()
+        {
+            var tasks = taskManager.GetTasks();
+
+            ui.WriteLine($"\n{tasks.Count} tasks total;");
+
+            int overdueTasks = 0;
+            foreach (var task in tasks)
+                if (task.HasDueDate() && task.DueDate < DateOnly.FromDateTime(DateTime.Now))
+                    overdueTasks++;
+            ui.WriteLine($"{overdueTasks} overdue tasks;");
+
+            if (tasks.Count > 0)
+            {
+                Dictionary<string, int> categoryCounts = new();
+                int uncategorizedTasks = 0;
+                foreach (var task in tasks)
+                {
+                    if (task.Category == null)
+                        uncategorizedTasks++;
+                    else if (!categoryCounts.TryAdd(task.Category, 1))
+                        categoryCounts[task.Category]++;
+                }
+
+                ui.WriteLine("\nTasks by categories:");
+                foreach (var categoryCount in categoryCounts)
+                {
+                    ui.WriteLine($"{categoryCount.Key}: {categoryCount.Value}");
+                }
+                ui.WriteLine("Uncategorized: " + uncategorizedTasks);
             }
         }
     }
