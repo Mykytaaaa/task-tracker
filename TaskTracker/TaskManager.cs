@@ -63,7 +63,7 @@ namespace TaskTracker
 
         public List<Task> FilterByDueDate(DateOnly from, DateOnly to)
         {
-            return tasks.FindAll(t => t.HasDueDate() && t.DueDate >= from && t.DueDate <= to);
+            return tasks.FindAll(t => t.DueDate != null && t.DueDate >= from && t.DueDate <= to);
         }
         
         public List<Task> SortTasks(IComparer<Task> taskComparer)

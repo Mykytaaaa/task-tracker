@@ -1,4 +1,5 @@
-﻿using TaskTracker.FileSavers;
+﻿using System.Threading.Tasks;
+using TaskTracker.FileSavers;
 using TaskTracker.TaskSortStrategies;
 using TaskTracker.UI;
 
@@ -140,8 +141,13 @@ namespace TaskTracker
         private void ListAll()
         {
             var tasks = taskManager.GetTasks();
-            foreach (var task in tasks)
-                ui.WriteLine(task.ToText());
+            if (tasks == null || tasks.Count == 0)
+                ui.WriteLine("No tasks found.");
+            else
+            {
+                foreach (var task in tasks)
+                    ui.WriteLine(task.ToText());
+            }
         }
 
         private void UpdateTaskById()
@@ -251,7 +257,7 @@ namespace TaskTracker
                 }
                 else
                     ui.WriteLine("Unknown command.");
-                
+
                 if (tasks == null || tasks.Count == 0)
                     ui.WriteLine("No tasks found.");
                 else
@@ -297,7 +303,7 @@ namespace TaskTracker
 
             int overdueTasks = 0;
             foreach (var task in tasks)
-                if (task.HasDueDate() && task.DueDate < DateOnly.FromDateTime(DateTime.Now))
+                if (task.DueDate != null && task.DueDate < DateOnly.FromDateTime(DateTime.Now))
                     overdueTasks++;
             ui.WriteLine($"{overdueTasks} overdue tasks;");
 
