@@ -254,5 +254,95 @@ namespace TaskTrackerTest
             Assert.DoesNotContain("Cook eggs", uiMock.output);
             Assert.DoesNotContain("Buy eggs", uiMock.output);
         }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenSummary_OutputContainsTotal()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Cook");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "10.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Rest");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "12.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Cook");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "11.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.ShowSummaryCommand);
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            string[] outLines = uiMock.output.Split('\n');
+            bool containsTotal = false;
+            bool containsCorrectTotal = false;
+            foreach (string line in outLines)
+            {
+                if (line.Contains("total", StringComparison.OrdinalIgnoreCase))
+                {
+                    containsTotal = true;
+                    containsCorrectTotal = line.Contains('3');
+                }
+            }
+
+            Assert.True(containsTotal);
+            Assert.True(containsCorrectTotal);
+        }
+
+        [Fact]
+        public void OpenSessionAddTasks_ThenSummary_OutputContainsAllCategories()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Buy eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Cook");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "10.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Go for a walk");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Rest");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "12.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.AddTaskCommand);
+            uiMock.userInput.Add("Cook eggs");
+            uiMock.userInput.Add(UserSession.SetCategoryCommand + "Cook");
+            uiMock.userInput.Add(UserSession.SetDueDateCommand + "11.01.2026");
+            uiMock.userInput.Add(string.Empty);
+
+            uiMock.userInput.Add(UserSession.ShowSummaryCommand);
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+
+            Assert.Contains("Cook", uiMock.output, StringComparison.OrdinalIgnoreCase);
+            Assert.Contains("Rest", uiMock.output, StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Fact]
+        public void OpenSessionNoTasks_ThenSummary_NoExceptionThrown()
+        {
+            var uiMock = new UIMock();
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
+
+            uiMock.userInput.Add(UserSession.ShowSummaryCommand);
+            uiMock.userInput.Add(UserSession.QuitCommand);
+
+            userSession.HandleUser();
+        }
     }
 }
