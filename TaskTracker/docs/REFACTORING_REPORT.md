@@ -1,5 +1,7 @@
 ﻿# Code smells
 
+## See 'Refactoring session' section of the Final Report for metrics
+
 ## 1: Magic values in Task:
 Priority and DueDate default values (-1 and DateOnly.MaxValue respectively) create mess and necessity to check functions HasPriority() and HasDueDate().
 
@@ -36,3 +38,10 @@ private void ListTasks(List<Task>? tasks)
             ui.WriteLine(task.ToText());
     }
 }
+
+## 3. Duplicate code:
+"path + "tasks.json"" appears 3 times in JsonFileSaver
+
+### Solution - introduce constant for file name:
+
+private const string filename = "tasks.json";
