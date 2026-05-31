@@ -3,11 +3,11 @@
     public class Task
     {
         public int Id { get; private set; }
-        public string Title;
-        public string? Description;
-        public int Priority;
-        public string? Category;
-        public DateOnly DueDate;
+        public string Title { get; set; }
+        public string? Description { get; set; }
+        public int Priority { get; set; }
+        public string? Category { get; set; }
+        public DateOnly DueDate { get; set; }
 
         private const string defaultTitle = "Untitled";
         private const int defaultPriority = -1;

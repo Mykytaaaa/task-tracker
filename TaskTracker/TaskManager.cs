@@ -4,7 +4,17 @@ namespace TaskTracker
 {
     public class TaskManager
     {
-        private List<Task> tasks = new List<Task>();
+        private List<Task> tasks;
+
+        public TaskManager()
+        {
+            tasks = new List<Task>();
+        }
+
+        public TaskManager(List<Task> tasks)
+        {
+            this.tasks = tasks;
+        }
 
         public void AddTask(Task task)
         {

@@ -26,12 +26,13 @@ namespace TaskTracker
         public const string SetSortByDueDateCommand = "due";
 
         private TaskManager taskManager;
-        private TaskBuilder taskBuilder = new();
+        private TaskBuilder taskBuilder;
         private IUserInterface ui;
 
-        public UserSession(TaskManager taskManager, IUserInterface ui)
+        public UserSession(TaskManager taskManager, TaskBuilder taskBuilder, IUserInterface ui)
         {
             this.taskManager = taskManager;
+            this.taskBuilder = taskBuilder;
             this.ui = ui;
         }
 

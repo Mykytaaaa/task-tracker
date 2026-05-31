@@ -9,7 +9,7 @@ namespace TaskTrackerTest
         public void OpenSession_ThenQuit_SessionEnds()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.QuitCommand);
 
@@ -20,7 +20,7 @@ namespace TaskTrackerTest
         public void OpenSession_AddTaskThenList_OutputContainsTask()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
@@ -39,7 +39,7 @@ namespace TaskTrackerTest
         public void OpenSession_AddTaskThenUpdateThenList_OutputContainsUpdatedTask()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
@@ -64,7 +64,7 @@ namespace TaskTrackerTest
         public void OpenSession_AddTaskThenDeleteThenList_OutputContainsNoTask()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
@@ -85,7 +85,7 @@ namespace TaskTrackerTest
         public void OpenSession_AddTaskThenFindByKeyword_OutputContainsTask()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
@@ -105,7 +105,7 @@ namespace TaskTrackerTest
         public void OpenSession_AddTaskWithAllPropertiesThenList_OutputContainsAllTaskProperties()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Eggs");
@@ -131,7 +131,7 @@ namespace TaskTrackerTest
         public void OpenSessionAddTasks_ThenFilterByCategory_OutputContainsFilteredTasks()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Buy eggs");
@@ -163,7 +163,7 @@ namespace TaskTrackerTest
         public void OpenSessionAddTasks_ThenFilterByInexistingCategory_OutputContainsNoTasks()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Buy eggs");
@@ -195,7 +195,7 @@ namespace TaskTrackerTest
         public void OpenSessionAddTasks_ThenFilterByDueDate_OutputContainsFilteredTasks()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Buy eggs");
@@ -227,7 +227,7 @@ namespace TaskTrackerTest
         public void OpenSessionAddTasks_ThenFilterByInexistentDueDateRange_OutputContainsNoTasks()
         {
             var uiMock = new UIMock();
-            var userSession = new UserSession(new TaskManager(), uiMock);
+            var userSession = new UserSession(new TaskManager(), new TaskBuilder(), uiMock);
 
             uiMock.userInput.Add(UserSession.AddTaskCommand);
             uiMock.userInput.Add("Buy eggs");

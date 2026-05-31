@@ -3,7 +3,12 @@
     public class TaskBuilder
     {
         private Task? task;
-        private int nextTaskId = 0;
+        private int nextTaskId;
+
+        public TaskBuilder(int nextTaskId = 0)
+        {
+            this.nextTaskId = nextTaskId;
+        }
 
         public TaskBuilder Reset()
         {
